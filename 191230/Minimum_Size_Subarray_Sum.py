@@ -1,20 +1,23 @@
+from collections import Counter, defaultdict
 class Solution:
-    def minSubArrayLen(self, s: int, nums: List[int]) -> int:
-#         if not nums:
-#             return 0
-        
-        min_window = len(nums) + 1
-        l, r = 0, 0
-        running_sum = 0
+    def findShortestSubArray(self, nums):
+        if not nums:
+            return 0
+        counter = dict(Counter(nums))
+        nums_degree = max(counter.values())
+        running_cnt = defaultdict(int)
+        l, r, min_len  = 0, 0, len(nums)
         for l in range(len(nums)):
-            while r < len(nums) and running_sum < s:
-                running_sum += nums[r]
+            while not running_cnt or \
+                r < len(nums) and max(running_cnt.values()) < nums_degree:
+                running_cnt[nums[r]] += 1
                 r += 1
-            if running_sum >= s and r - l < min_window:
-                min_window = r - l
-            running_sum -= nums[l]
-            
-        return min_window if min_window != len(nums) + 1 else 0
-            
+            if max(running_cnt.values()) == nums_degree:
+                min_len = min(min_len, r - l)
+            running_cnt[nums[l]] -= 1
+                
+        print(nums_degree, r)
+        return min_len
             
         
+    
