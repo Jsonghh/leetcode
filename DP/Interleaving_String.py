@@ -4,6 +4,7 @@ class Solution:
         
         m, n = len(s1), len(s2)
         if m + n != len(s3): return False
+        
         if m == 0 or n == 0: 
             return s1 == s3 or s2 == s3
         
